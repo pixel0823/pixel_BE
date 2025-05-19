@@ -12,8 +12,16 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String secretKey = Base64.getEncoder().encodeToString("pixel-secret-key-0823".getBytes());
+    private final String secretKey;
     private final long expiration = 1000L * 60 * 60 * 24;
+
+    public JwtUtil() {
+        String rawSecret = System.getenv("JWT_SECRET");
+        if (rawSecret == null) {
+            throw new IllegalStateException("JWT_SECRET 환경 변수가 설저오디어 있지 않습니다.");
+        }
+        this.secretKey = Base64.getEncoder().encodeToString(rawSecret.getBytes());
+    }
 
     public String createToken(String userId, UserRole role) {
         Claims claims = Jwts.claims().setSubject(userId);
