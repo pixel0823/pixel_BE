@@ -1,10 +1,11 @@
-package com.pixel_game.pixel.DTO;
+package com.pixel_game.pixel.DTO.Request.auth;
 
 import com.pixel_game.pixel.Entity.User;
 import com.pixel_game.pixel.Entity.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Getter
 @Setter
@@ -19,7 +20,7 @@ public class JoinRequest {
     public User toEntity(String encodedPassword) {
         return User.builder()
                 .userId(userId)
-                .password(password)
+                .password(encodedPassword)
                 .email(email)
                 .name(name)
                 .role(UserRole.USER)
