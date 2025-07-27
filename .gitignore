@@ -1,0 +1,52 @@
+# 빌드 결과물
+target/
+build/
+.mvn/wrapper/maven-wrapper.jar
+
+# 예외: src 하위의 target, build는 버전관리 가능하도록 허용
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# STS (Spring Tool Suite)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# OS별 불필요 파일
+.DS_Store
+Thumbs.db
+
+# 로그 파일
+*.log
+
+# 환경설정 파일 (선택 사항)
+application.properties
+application.yml
+
+# 기타
+*.class
+
+# 기타 프로젝트 문서 (HELP.md는 보통 커밋 대상)
+# 필요하면 HELP.md 포함시키세요
