@@ -1,26 +1,45 @@
 package project.game.pixel.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.game.pixel.dto.request.SignupRequestDto;
-import project.game.pixel.dto.request.LoginRequestDto;
-import project.game.pixel.service.UserService;
+import project.game.pixel.dto.request.auth.IdCheckRequestDto;
+import project.game.pixel.dto.request.auth.SignupRequestDto;
+import project.game.pixel.dto.request.auth.LoginRequestDto;
+import project.game.pixel.dto.response.auth.IdCheckResponseDto;
+import project.game.pixel.dto.response.auth.SignInResponseDto;
+import project.game.pixel.dto.response.auth.SignUpResponseDto;
+import project.game.pixel.service.AuthService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    @PostMapping("/signup")
-    public String signup(@RequestBody SignupRequestDto requestDto) {
-        userService.signup(requestDto);
-        return "회원가입 성공";
+    @PostMapping("/id-check")
+    public ResponseEntity<? super IdCheckResponseDto> idCheck (
+            @RequestBody @Valid IdCheckRequestDto requestBody
+    ) {
+        ResponseEntity<? super IdCheckResponseDto> response = authService.idCheck(requestBody);
+        return response;
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody LoginRequestDto requestDto) {
-        return userService.login(requestDto);
+    @PostMapping("/sign-up")
+    public ResponseEntity<? super SignUpResponseDto> signUp (
+            @RequestBody @Valid SignupRequestDto requestBody
+    ) {
+        ResponseEntity<? super SignUpResponseDto> response = authService.signUp(requestBody);
+        return response;
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<? super SignInResponseDto> signIn (
+            @RequestBody @Valid LoginRequestDto requestBody
+    ) {
+        ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
+        return response;
     }
 }
