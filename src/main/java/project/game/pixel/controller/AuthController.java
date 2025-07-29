@@ -16,14 +16,12 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody SignupRequestDto requestDto) {
-        userService.signup(requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
+    public ResponseEntity<? super SignupResponseDto> signup(@RequestBody SignupRequestDto requestDto) {
+        return userService.signup(requestDto);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto requestDto) {
-        String token = userService.login(requestDto);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<? super LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
+        return userService.login(requestDto);
     }
 }
