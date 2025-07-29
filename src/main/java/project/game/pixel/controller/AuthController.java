@@ -1,6 +1,8 @@
 package project.game.pixel.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.game.pixel.dto.request.SignupRequestDto;
 import project.game.pixel.dto.request.LoginRequestDto;
@@ -14,13 +16,12 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody SignupRequestDto requestDto) {
-        userService.signup(requestDto);
-        return "회원가입 성공";
+    public ResponseEntity<? super SignupResponseDto> signup(@RequestBody SignupRequestDto requestDto) {
+        return userService.signup(requestDto);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequestDto requestDto) {
+    public ResponseEntity<? super LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
         return userService.login(requestDto);
     }
 }
