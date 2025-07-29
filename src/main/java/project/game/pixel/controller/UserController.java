@@ -1,31 +1,40 @@
 package project.game.pixel.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import project.game.pixel.dto.UserInfoDto;
-import project.game.pixel.dto.UserUpdateDto;
+import project.game.pixel.dto.request.user.UserUpdateRequestDto;
+import project.game.pixel.dto.response.user.UserDeleteResponseDto;
+import project.game.pixel.dto.response.user.UserUpdateResponseDto;
+import project.game.pixel.provider.JwtTokenProvider;
 import project.game.pixel.service.UserService;
 
-
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    @GetMapping("/me")
-    public ResponseEntity<? super UserInfoDto> getMyInfo(@AuthenticationPrincipal UserDetails userDetails) {
-        return userService.getUserInfo(userDetails.getUsername());
+    @PutMapping("/user-update")
+    public ResponseEntity<? super UserUpdateResponseDto> updateUserInfo(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody @Valid UserUpdateRequestDto requestBody
+    ) {
+        String userId = jwtTokenProvider.extractUserIdFromHeader(authorization);
+        requestBody.setUserId(userId);
+        ResponseEntity<? super UserUpdateResponseDto> response = userService.updateUserInfo(requestBody);
+        return response;
     }
 
-    @PutMapping("/me")
-    public ResponseEntity<Void> updateMyInfo(@RequestBody UserUpdateDto dto, @AuthenticationPrincipal UserDetails userDetails) {
-        return userService.updateUserInfo(userDetails.getUsername(), dto);
+    @DeleteMapping("/user-delete")
+    public ResponseEntity<? super UserDeleteResponseDto> deleteUserInfo(
+            @RequestHeader("Authorization") String authorization
+    ) {
+        String userId = jwtTokenProvider.extractUserIdFromHeader(authorization);
+        ResponseEntity<? super UserDeleteResponseDto> response = userService.deleteUser(userId);
+        return response;
     }
 
-    // 필요 시 회원 탈퇴, 비밀번호 변경 등 추가
 }
