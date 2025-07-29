@@ -55,16 +55,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             }
 
             String userId = jwtProvider.getUserIdFromToken(token);
-            Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByUserId(userId);
+            Optional<User> optionalUser = userRepository.findByUserId(userId);
 
-            if (optionalRefreshToken.isPresent()) {
-                RefreshToken refreshToken = optionalRefreshToken.get();
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
 
-                if (jwtProvider.validateToken(refreshToken.getToken())) {
-                    String newAccessToken = jwtProvider.createAccessToken(userId);
-                    response.setHeader("Authorization", "Bearer " + newAccessToken);
+                Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByUserId(user.getNumberId());
+                if (optionalRefreshToken.isPresent()) {
+                    RefreshToken refreshToken = optionalRefreshToken.get();
 
-                    authenticateUser(userId, request);
+                    if (jwtProvider.validateToken(refreshToken.getToken())) {
+                        String newAccessToken = jwtProvider.createAccessToken(userId);
+                        response.setHeader("Authorization", "Bearer " + newAccessToken);
+
+                        authenticateUser(userId, request);
+                    }
                 }
             }
 

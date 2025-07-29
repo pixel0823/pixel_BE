@@ -52,6 +52,6 @@ public class User {
         this.nickname = dto.getNickname();
         this.profileImageUrl = dto.getProfileImageUrl();
         this.createdAt = LocalDateTime.now();
-        this.role = "ROLE_USER";
+        this.role = "USER";
     }
 }
