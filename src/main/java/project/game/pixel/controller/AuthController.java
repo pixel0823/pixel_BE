@@ -3,6 +3,7 @@ package project.game.pixel.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import project.game.pixel.dto.request.auth.IdCheckRequestDto;
 import project.game.pixel.dto.request.auth.SignupRequestDto;
@@ -29,8 +30,13 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<? super SignUpResponseDto> signUp (
-            @RequestBody @Valid SignupRequestDto requestBody
+            @RequestBody @Valid SignupRequestDto requestBody, BindingResult bindingResult
     ) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("유효성 오류: " + bindingResult.getFieldError().getDefaultMessage());
+            return ResponseEntity.badRequest().body("입력값 오류");
+        }
+
         ResponseEntity<? super SignUpResponseDto> response = authService.signUp(requestBody);
         return response;
     }

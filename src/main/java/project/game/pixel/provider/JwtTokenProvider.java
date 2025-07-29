@@ -3,18 +3,24 @@ package project.game.pixel.provider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import project.game.pixel.entity.RefreshToken;
 import project.game.pixel.repository.RefreshTokenRepository;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
     @Value("${jwt.secret}")
-    private String secretKey;
+    private String secretKeyString;
+
+    private SecretKey secretKey;
 
     private final long accessTokenValidity = 1000L * 60 * 60;
     private final long refreshTokenValidity = 1000L * 60 * 60 * 24 * 7;
@@ -23,6 +29,12 @@ public class JwtTokenProvider {
 
     public JwtTokenProvider(RefreshTokenRepository refreshTokenRepository) {
         this.refreshTokenRepository = refreshTokenRepository;
+    }
+
+    @PostConstruct
+    public void init() {
+        // secretKeyString 문자열을 바이트로 변환해 SecretKey 생성
+        this.secretKey = Keys.hmacShaKeyFor(secretKeyString.getBytes(StandardCharsets.UTF_8));
     }
 
     // AccessToken 생성
@@ -35,7 +47,7 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(secretKey)
                 .compact();
     }
 
@@ -47,7 +59,7 @@ public class JwtTokenProvider {
         String token = Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(expiry)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(secretKey)
                 .compact();
 
         RefreshToken refreshtoken = new RefreshToken();
@@ -62,7 +74,10 @@ public class JwtTokenProvider {
     // 토큰 유효성 검사
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
@@ -70,7 +85,9 @@ public class JwtTokenProvider {
     }
 
     public String getUserIdFromToken(String token) {
-        return Jwts.parser().setSigningKey(secretKey)
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
                 .parseClaimsJws(token)
                 .getBody().getSubject();
     }
