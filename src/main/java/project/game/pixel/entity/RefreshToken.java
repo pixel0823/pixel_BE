@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 public class RefreshToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_ID")
     private Long userId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", referencedColumnName = "NUMBER_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "NUMBER_ID")
     private User user;
 
     @Column(name = "TOKEN", nullable = false, length = 1000)
