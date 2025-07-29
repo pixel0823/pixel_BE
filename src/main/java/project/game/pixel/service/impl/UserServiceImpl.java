@@ -2,8 +2,8 @@ package project.game.pixel.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import project.game.pixel.dto.SignupRequestDto;
-import project.game.pixel.dto.LoginRequestDto;
+import project.game.pixel.dto.request.SignupRequestDto;
+import project.game.pixel.dto.request.LoginRequestDto;
 import project.game.pixel.repository.UserRepository;
 import project.game.pixel.service.UserService;
 
