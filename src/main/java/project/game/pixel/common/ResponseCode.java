@@ -8,4 +8,6 @@ public interface ResponseCode {
     String SIGN_IN_FAIL = "SF";
 
     String DATABASE_ERROR = "DBE";
+
+    String USER_NOT_FOUND = "UF";
 }

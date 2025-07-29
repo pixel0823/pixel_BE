@@ -12,4 +12,5 @@ public interface AuthService {
     ResponseEntity<? super IdCheckResponseDto> idCheck(IdCheckRequestDto dto);
     ResponseEntity<? super SignUpResponseDto> signUp (SignupRequestDto dto);
     ResponseEntity<? super SignInResponseDto> signIn (LoginRequestDto dto);
+    ResponseEntity<? super IdCheckResponseDto> logout (IdCheckRequestDto dto);
 }
