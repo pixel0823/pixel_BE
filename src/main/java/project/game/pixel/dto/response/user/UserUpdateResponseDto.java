@@ -12,17 +12,12 @@ import project.game.pixel.dto.response.ResponseDto;
 @Getter
 public class UserUpdateResponseDto extends ResponseDto {
 
-    private String token;
-    private Long expirationTime;
-
-    private UserUpdateResponseDto(String token, Long expirationTime) {
+    private UserUpdateResponseDto() {
         super();
-        this.token = token;
-        this.expirationTime = expirationTime;
     }
 
-    public static ResponseEntity<UserUpdateResponseDto> success(String token, Long expirationTime) {
-        UserUpdateResponseDto responseBody = new UserUpdateResponseDto(token, expirationTime);
+    public static ResponseEntity<UserUpdateResponseDto> success() {
+        UserUpdateResponseDto responseBody = new UserUpdateResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
