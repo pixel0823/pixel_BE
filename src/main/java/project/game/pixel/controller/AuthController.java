@@ -48,4 +48,12 @@ public class AuthController {
         ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
         return response;
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<? super IdCheckResponseDto> logout(
+            @RequestBody @Valid IdCheckRequestDto requestBody
+    ) {
+        ResponseEntity<? super IdCheckResponseDto> response = authService.logout(requestBody);
+        return response;
+    }
 }

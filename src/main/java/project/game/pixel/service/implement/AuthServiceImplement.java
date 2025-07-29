@@ -1,6 +1,7 @@
 package project.game.pixel.service.implement;
 
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +16,7 @@ import project.game.pixel.dto.response.auth.SignInResponseDto;
 import project.game.pixel.dto.response.auth.SignUpResponseDto;
 import project.game.pixel.entity.User;
 import project.game.pixel.provider.JwtTokenProvider;
+import project.game.pixel.repository.RefreshTokenRepository;
 import project.game.pixel.repository.UserRepository;
 import project.game.pixel.service.AuthService;
 
@@ -26,6 +28,7 @@ public class AuthServiceImplement implements AuthService {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -94,6 +97,23 @@ public class AuthServiceImplement implements AuthService {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<? super IdCheckResponseDto> logout(IdCheckRequestDto dto) {
+        try {
+            Optional<User> userOptional = userRepository.findByUserId(dto.getId());
+            if (userOptional.isEmpty()) return ResponseDto.userNotFound();
+
+            Long UserDbId = userOptional.get().getNumberId();
+            refreshTokenRepository.deleteByUserId(UserDbId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return IdCheckResponseDto.success();
     }
 
 
