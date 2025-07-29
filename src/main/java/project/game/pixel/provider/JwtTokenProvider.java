@@ -74,4 +74,8 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody().getSubject();
     }
+
+    public long getAccessTokenValidityInSeconds() {
+        return accessTokenValidity/1000;
+    }
 }

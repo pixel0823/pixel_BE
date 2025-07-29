@@ -2,7 +2,7 @@ package project.game.pixel.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import project.game.pixel.dto.request.SignupRequestDto;
+import project.game.pixel.dto.request.auth.SignupRequestDto;
 
 import java.time.LocalDateTime;
 
