@@ -3,12 +3,11 @@ package project.game.pixel.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import project.game.pixel.dto.request.user.UserDeleteRequestDto;
 import project.game.pixel.dto.request.user.UserUpdateRequestDto;
 import project.game.pixel.dto.response.user.UserDeleteResponseDto;
 import project.game.pixel.dto.response.user.UserUpdateResponseDto;
+import project.game.pixel.provider.JwtTokenProvider;
 import project.game.pixel.service.UserService;
 
 @RestController
@@ -16,25 +15,25 @@ import project.game.pixel.service.UserService;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PutMapping("/user-update")
     public ResponseEntity<? super UserUpdateResponseDto> updateUserInfo(
-            @RequestBody @Valid UserUpdateRequestDto requestBody, BindingResult bindingResult
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody @Valid UserUpdateRequestDto requestBody
     ) {
-        if (bindingResult.hasErrors()) {
-            System.out.println("유효성 오류: " + bindingResult.getFieldError().getDefaultMessage());
-            return ResponseEntity.badRequest().body("입력값 오류");
-        }
-        System.out.println("");
+        String userId = jwtTokenProvider.extractUserIdFromHeader(authorization);
+        requestBody.setUserId(userId);
         ResponseEntity<? super UserUpdateResponseDto> response = userService.updateUserInfo(requestBody);
         return response;
     }
 
     @DeleteMapping("/user-delete")
     public ResponseEntity<? super UserDeleteResponseDto> deleteUserInfo(
-            @RequestBody @Valid UserDeleteRequestDto requestBody
+            @RequestHeader("Authorization") String authorization
     ) {
-        ResponseEntity<? super UserDeleteResponseDto> response = userService.deleteUser(requestBody);
+        String userId = jwtTokenProvider.extractUserIdFromHeader(authorization);
+        ResponseEntity<? super UserDeleteResponseDto> response = userService.deleteUser(userId);
         return response;
     }
 
