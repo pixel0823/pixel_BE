@@ -21,7 +21,7 @@ public class UserDeleteResponseDto extends ResponseDto {
     }
 
     public static ResponseEntity<ResponseDto> fail() {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.SIGN_IN_FAIL, ResponseMessage.SIGN_IN_FAIL);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.USER_NOT_FOUND, ResponseMessage.USER_NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import project.game.pixel.dto.request.user.UserUpdateRequestDto;
 import project.game.pixel.dto.response.ResponseDto;
 import project.game.pixel.dto.response.user.UserDeleteResponseDto;
+import project.game.pixel.dto.response.user.UserInfoResponseDto;
 import project.game.pixel.dto.response.user.UserUpdateResponseDto;
 import project.game.pixel.entity.User;
 import project.game.pixel.repository.UserRepository;
@@ -59,6 +60,21 @@ public class UserServiceImplement  implements UserService {
             userRepository.deleteById(user.getNumberId());
 
             return UserDeleteResponseDto.success();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+    }
+    @Override
+    public ResponseEntity<? super UserInfoResponseDto>  getUserInfo(String userId) {
+        try {
+            Optional<User> userOptional = userRepository.findByUserId(userId);
+            if (userOptional.isEmpty()) return UserInfoResponseDto.fail();
+
+            User user = userOptional.get();
+
+            return UserInfoResponseDto.success(user);
 
         } catch (Exception e) {
             e.printStackTrace();
