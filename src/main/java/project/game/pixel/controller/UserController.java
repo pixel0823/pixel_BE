@@ -18,11 +18,11 @@ public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/user-info")
-    public ResponseEntity<? super UserInfoResponseDto> userInfo(
+    @GetMapping("/user-info")
+    public ResponseEntity<? super UserInfoResponseDto> getUserInfo(
             @RequestHeader("Authorization") String authorization
     ) {
-        String userId = jwtTokenProvider.getUserIdFromToken(authorization);
+        String userId = jwtTokenProvider.extractUserIdFromHeader(authorization);
         ResponseEntity<? super UserInfoResponseDto> response = userService.getUserInfo(userId);
         return response;
     }

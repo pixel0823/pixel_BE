@@ -70,7 +70,7 @@ public class UserServiceImplement  implements UserService {
     public ResponseEntity<? super UserInfoResponseDto>  getUserInfo(String userId) {
         try {
             Optional<User> userOptional = userRepository.findByUserId(userId);
-            if (userOptional.isEmpty()) return UserDeleteResponseDto.fail();
+            if (userOptional.isEmpty()) return UserInfoResponseDto.fail();
 
             User user = userOptional.get();
 
