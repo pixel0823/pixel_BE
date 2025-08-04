@@ -92,6 +92,15 @@ public class JwtTokenProvider {
                 .getBody().getSubject();
     }
 
+    public String extractUserIdFromHeader(String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Invalid Authorization header.");
+        }
+
+        String token = authorizationHeader.substring(7);
+        return getUserIdFromToken(token);
+    }
+
     public long getAccessTokenValidityInSeconds() {
         return accessTokenValidity/1000;
     }
