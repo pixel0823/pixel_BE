@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.game.pixel.dto.request.user.UserUpdateRequestDto;
 import project.game.pixel.dto.response.user.UserDeleteResponseDto;
+import project.game.pixel.dto.response.user.UserInfoResponseDto;
 import project.game.pixel.dto.response.user.UserUpdateResponseDto;
 import project.game.pixel.provider.JwtTokenProvider;
 import project.game.pixel.service.UserService;
@@ -16,6 +17,15 @@ import project.game.pixel.service.UserService;
 public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+
+    @PostMapping("/user-info")
+    public ResponseEntity<? super UserInfoResponseDto> userInfo(
+            @RequestHeader("Authorization") String authorization
+    ) {
+        String userId = jwtTokenProvider.getUserIdFromToken(authorization);
+        ResponseEntity<? super UserInfoResponseDto> response = userService.getUserInfo(userId);
+        return response;
+    }
 
     @PutMapping("/user-update")
     public ResponseEntity<? super UserUpdateResponseDto> updateUserInfo(
