@@ -10,4 +10,6 @@ public interface ResponseCode {
     String DATABASE_ERROR = "DBE";
 
     String USER_NOT_FOUND = "UF";
+
+    String DUPLICATE_NAME="DN";
 }
