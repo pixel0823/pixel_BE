@@ -22,7 +22,7 @@ public class UserController {
     public ResponseEntity<? super UserInfoResponseDto> userInfo(
             @RequestHeader("Authorization") String authorization
     ) {
-        String userId = jwtTokenProvider.getUserIdFromToken(authorization);
+        String userId = jwtTokenProvider.extractUserIdFromHeader(authorization);
         ResponseEntity<? super UserInfoResponseDto> response = userService.getUserInfo(userId);
         return response;
     }

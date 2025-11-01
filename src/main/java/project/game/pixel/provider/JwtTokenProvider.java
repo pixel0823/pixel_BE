@@ -92,6 +92,8 @@ public class JwtTokenProvider {
                 .getBody().getSubject();
     }
 
+
+
     public String extractUserIdFromHeader(String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Invalid Authorization header.");

@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PixelApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PixelApplication.class, args);
+
+        System.setProperty("java.net.preferIpv4Stack", "true");
+        SpringApplication.run(PixelApplication.class, args);
 	}
 
 }
