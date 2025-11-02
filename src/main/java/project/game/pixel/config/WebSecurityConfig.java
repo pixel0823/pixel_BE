@@ -34,7 +34,7 @@ public class WebSecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity httpSecurity, CorsConfigurationSource corsConfigurationSource) throws Exception {
+    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
                 .cors(cors -> cors
@@ -47,7 +47,9 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(reqeust -> reqeust
                         .requestMatchers("/", "/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/user/**").hasAuthority("USER")
+                        //
+                        //
+                        .requestMatchers("/api/v1/user/**").authenticated()
                         .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )

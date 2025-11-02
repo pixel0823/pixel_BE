@@ -73,6 +73,7 @@ public class UserServiceImplement  implements UserService {
             if (userOptional.isEmpty()) return UserDeleteResponseDto.fail();
 
             User user = userOptional.get();
+            System.out.println(user);
 
             return UserInfoResponseDto.success(user);
 

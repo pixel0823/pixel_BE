@@ -47,6 +47,7 @@ public class AuthController {
     ) {
         System.out.print(requestBody);
         ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
+        System.out.println(response);
         return response;
     }
 

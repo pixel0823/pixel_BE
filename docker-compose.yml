@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  pixel-app:
+    build: .
+    container_name: pixel-spring-app
+    ports:
+      - "8080:8080"
+    # 이 부분을 추가하세요
+    environment:
+      # 만약 application-prod.properties를 사용했다면
+      - SPRING_PROFILES_ACTIVE=prod
+      # 만약 application-dev.properties를 사용했다면
+      # - SPRING_PROFILES_ACTIVE=dev

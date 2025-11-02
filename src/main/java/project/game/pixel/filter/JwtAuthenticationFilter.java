@@ -69,6 +69,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                         response.setHeader("Authorization", "Bearer " + newAccessToken);
 
                         authenticateUser(userId, request);
+                        filterChain.doFilter(request, response);
+                        return;
                     }
                 }
             }
